@@ -41,42 +41,42 @@ const Balance = () => {
   }, []);
 
   const handleBalances = async () => {
-    // const sAMBOnAMB = new ethers.Contract(getTokenAddress('SAMB', ambChainId), ABI, providers[ambChainId]);
-    // const sAMBOnETHLocked = sAMBOnAMB.balanceOf(bridges[ethChainId].native);
-    // const sAMBOnBSCLocked = sAMBOnAMB.balanceOf(bridges[bscChainId].native);
-    // const sAMBOnETH = new ethers.Contract(getTokenAddress('SAMB', ethChainId), ABI, providers[ethChainId]);
-    // const sAMBOnBSC = new ethers.Contract(getTokenAddress('SAMB', bscChainId), ABI, providers[bscChainId]);
-    // const sAMBOnETHSupplied = sAMBOnETH.totalSupply();
-    // const sAMBOnBSCSupplied = sAMBOnBSC.totalSupply();
+    const sAMBOnAMB = new ethers.Contract(getTokenAddress('SAMB', ambChainId), ABI, providers[ambChainId]);
+    const sAMBOnETHLocked = sAMBOnAMB.balanceOf(bridges[ethChainId].native);
+    const sAMBOnBSCLocked = sAMBOnAMB.balanceOf(bridges[bscChainId].native);
+    const sAMBOnETH = new ethers.Contract(getTokenAddress('SAMB', ethChainId), ABI, providers[ethChainId]);
+    const sAMBOnBSC = new ethers.Contract(getTokenAddress('SAMB', bscChainId), ABI, providers[bscChainId]);
+    const sAMBOnETHSupplied = sAMBOnETH.totalSupply();
+    const sAMBOnBSCSupplied = sAMBOnBSC.totalSupply();
 
-    // const USDCOnETH = new ethers.Contract(getTokenAddress('USDC', ethChainId), ABI, providers[ethChainId]);
-    // const USDCOnEthLocked = USDCOnETH.balanceOf(bridges[ethChainId].foreign);
-    // const USDCOnBSC = new ethers.Contract(getTokenAddress('USDC', bscChainId), ABI, providers[bscChainId]);
-    // const USDCOnBSCLocked = USDCOnBSC.balanceOf(bridges[bscChainId].foreign);
-    // const USDCOnAMB = new ethers.Contract(getTokenAddress('USDC', ambChainId), ABI, providers[ambChainId]);
-    // const USDCOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(bridges[ethChainId].native);
-    // const USDCOnAMBBSCThinkLocked = USDCOnAMB.bridgeBalances(bridges[bscChainId].native);
+    const USDCOnETH = new ethers.Contract(getTokenAddress('USDC', ethChainId), ABI, providers[ethChainId]);
+    const USDCOnEthLocked = USDCOnETH.balanceOf(bridges[ethChainId].foreign);
+    const USDCOnBSC = new ethers.Contract(getTokenAddress('USDC', bscChainId), ABI, providers[bscChainId]);
+    const USDCOnBSCLocked = USDCOnBSC.balanceOf(bridges[bscChainId].foreign);
+    const USDCOnAMB = new ethers.Contract(getTokenAddress('USDC', ambChainId), ABI, providers[ambChainId]);
+    const USDCOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(bridges[ethChainId].native);
+    const USDCOnAMBBSCThinkLocked = USDCOnAMB.bridgeBalances(bridges[bscChainId].native);
 
 
-    // const BUSDOnETH = new ethers.Contract(getTokenAddress('BUSD', bscChainId), ABI, providers[bscChainId]);
-    // const BUSDOnEthLocked = BUSDOnETH.balanceOf(bridges[bscChainId].foreign);
+    const BUSDOnETH = new ethers.Contract(getTokenAddress('BUSD', bscChainId), ABI, providers[bscChainId]);
+    const BUSDOnEthLocked = BUSDOnETH.balanceOf(bridges[bscChainId].foreign);
     // const BUSDOnBSC = new ethers.Contract(getTokenAddress('USDC', bscChainId), ABI, providers[bscChainId]);
     // const BUSDOnBSCLocked = USDCOnBSC.balanceOf(bridges[bscChainId].foreign);
-    // const BUSDOnAMB = new ethers.Contract(getTokenAddress('BUSD', ambChainId), ABI, providers[ambChainId]);
+    const BUSDOnAMB = new ethers.Contract(getTokenAddress('BUSD', ambChainId), ABI, providers[ambChainId]);
     // const BUSDOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(bridges[ethChainId].native);
-    // const BUSDOnAMBBSCThinkLocked = BUSDOnAMB.bridgeBalances(bridges[bscChainId].native);
+    const BUSDOnAMBBSCThinkLocked = BUSDOnAMB.bridgeBalances(bridges[bscChainId].native);
 
     Promise.all([
-      // sAMBOnETHLocked,
-      // sAMBOnBSCLocked,
-      // sAMBOnETHSupplied,
-      // sAMBOnBSCSupplied,
-      // USDCOnEthLocked,
-      // USDCOnBSCLocked,
-      // USDCOnAMBETHThinkLocked,
-      // USDCOnAMBBSCThinkLocked,
-      // BUSDOnEthLocked,
-      // BUSDOnAMBBSCThinkLocked,
+      sAMBOnETHLocked,
+      sAMBOnBSCLocked,
+      sAMBOnETHSupplied,
+      sAMBOnBSCSupplied,
+      USDCOnEthLocked,
+      USDCOnBSCLocked,
+      USDCOnAMBETHThinkLocked,
+      USDCOnAMBBSCThinkLocked,
+      BUSDOnEthLocked,
+      BUSDOnAMBBSCThinkLocked,
     ]).then((res) => {
       setBalances(res);
     });
