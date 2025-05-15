@@ -8,6 +8,8 @@ import ABI from '../../utils/balanceAbi.json';
 import {Connection, PublicKey} from '@solana/web3.js';
 import {getMint} from '@solana/spl-token';
 import {getSolTokenBalance} from '../../utils/getSolTokenBalance';
+import {allNetworks} from '../../utils/networks';
+import NetworksConfig from '../../utils/networks.json';
 
 const tableHeads = [
   '',
@@ -83,17 +85,21 @@ const Balance = () => {
   };
 
   const handleSolBalances = async () => {
-    const sAMBOnSOL = new ethers.Contract('0x8D3e03889bFCb859B2dBEB65C60a52Ad9523512c', ABI, providers[ambChainId]);
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+      NetworksConfig.testnet.amb.rpcUrl,
+      22040
+    );
+    const sAMBOnSOL = new ethers.Contract('0x8D3e03889bFCb859B2dBEB65C60a52Ad9523512c', ABI, provider);
     const sAMBOnSOLLocked = sAMBOnSOL.balanceOf('0xfdbBEc1347B64c6eAc2cbabfc98D908AC2A91570');
     const sAMBOnSOLSupplied = getTokenTotalSupply('sambYmW5WDE3nmJLuUMHsZqJEdwqoFhGvsf6PVthu3a');
 
     const USDCOnSolLocked = getSolTokenBalance('usdcfEkwfCV5owknRwdZGWVSnaZjCdTmjLtmiG6P1GF', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const USDCOnAMB = new ethers.Contract('0xF7c8f345Ac1d29F13c16d8Ae34f534D9056E3FF2', ABI, providers[ambChainId]);
+    const USDCOnAMB = new ethers.Contract('0xF7c8f345Ac1d29F13c16d8Ae34f534D9056E3FF2', ABI, provider);
     const USDCOnAMBSOLThinkLocked = USDCOnAMB.bridgeBalances('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
 
-    const wSOLOnSolLocked = await getSolTokenBalance('So11111111111111111111111111111111111111112', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const wSOLOnAMB = new ethers.Contract('0x28559D10F1C1E0D74F7Cfbb0Bf48e75F605b73Ac', ABI, providers[ambChainId]);
-    const USDwSOLOnAMBSOLThinkLocked = await wSOLOnAMB.bridgeBalanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
+    const wSOLOnSolLocked = getSolTokenBalance('So11111111111111111111111111111111111111112', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
+    const wSOLOnAMB = new ethers.Contract('0x28559D10F1C1E0D74F7Cfbb0Bf48e75F605b73Ac', ABI, provider);
+    const USDwSOLOnAMBSOLThinkLocked = wSOLOnAMB.bridgeBalanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
 
     Promise.all([sAMBOnSOLLocked, sAMBOnSOLSupplied, USDCOnSolLocked, USDCOnAMBSOLThinkLocked, wSOLOnSolLocked, USDwSOLOnAMBSOLThinkLocked]).then(setSolBalances);
   };
