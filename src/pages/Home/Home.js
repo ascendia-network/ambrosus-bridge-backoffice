@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
+import axios from 'axios';
 import {Tab, Tabs} from '@mui/material';
 import providers, {ambChainId, bscChainId, ethChainId} from '../../utils/providers';
 import TabPanel from './components/TabPanel';
@@ -6,7 +7,6 @@ import {createBridgeContract} from '../../utils/contracts';
 import Balance from '../Balance';
 import Fees from '../Fees/Fees';
 import ConfigContext from '../../context/ConfigContext/context';
-import axios from 'axios';
 import FeesBalances from "../FeesBalances/FeesBalances";
 
 const solChainId = '6003100671677645902';
