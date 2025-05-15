@@ -16,7 +16,6 @@ const FeesItem = ({
       return totalBalance.add(BigNumber.from(el.feeTransfer.toString().includes('+') ? '0' : el.feeTransfer.toString()));
     }, BigNumber.from(0));
   }, [item]);
-  console.log(item);
 
   const handleTxOpen = () => {
     const chns = chains.split('/');

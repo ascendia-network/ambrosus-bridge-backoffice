@@ -29,18 +29,16 @@ const TransactionItem = ({item}) => {
       .padStart(2, '0')}`;
   };
 
-  const getTxLink = (chainId, hash) => {
+  const getExplorerLink = (chainId) => {
+    if (chainId === 6003100671677645902) {
+      return `https://explorer.solana.com/tx`
+    }
     const explorerLink = Object.values(allNetworks).find(
       (el) => el.chainId === chainId,
     );
-    return explorerLink ? `${explorerLink.explorerUrl}tx/${hash}` : null;
+
+    return explorerLink ? explorerLink.explorerUrl : null;
   };
-
-  const explorer = useMemo(() => Object.values(allNetworks).find(
-    (el) => el.chainId === item.chainId,
-  ).explorerUrl);
-
-  let explorerLink = `${explorer}address/`;
 
   return (
     <>
@@ -49,17 +47,17 @@ const TransactionItem = ({item}) => {
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell>
-          <a href={`${explorerLink}${item.userAddress}`} target="_blank">
+          <a href={`${getExplorerLink(item.chainId)}address/${item.userAddress}`} target="_blank">
             {item.userAddress}
           </a>
         </TableCell>
         <TableCell>
-          <a href={getTxLink(item.chainId, item.withdrawTx.txHash)} target="_blank">
+          <a href={`${getExplorerLink(item.chainId)}address/${item.tokenFrom.address}`} target="_blank">
             {item.tokenFrom.name}
           </a>
           ->
           {destinationNetTxHash ? (
-            <a href={getTxLink(item.destChainId, destinationNetTxHash)} target="_blank">
+            <a href={`${getExplorerLink(item.destChainId)}address/${item.tokenTo.address}`} target="_blank">
               {item.tokenTo.name}
             </a>
           ) : item.tokenTo.name}
@@ -69,7 +67,7 @@ const TransactionItem = ({item}) => {
           {item.denominatedAmount}
         </TableCell>
         <TableCell>
-          {utils.formatUnits(
+          {!item.feeTransfer ? '-' : utils.formatUnits(
             BigNumber.from(item.feeTransfer.toString())
               .add(BigNumber.from(item.feeBridge.toString())),
             18
