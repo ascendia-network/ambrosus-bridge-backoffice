@@ -57,7 +57,7 @@ const FeesBalances = (address) => {
             <TableCell>{balances[4]}</TableCell>
             <TableCell>{balances[6]}</TableCell>
             <TableCell>{balances[8]}</TableCell>
-            <TableCell>-</TableCell>
+            <TableCell>{balances[9]}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Bridge fee</TableCell>
