@@ -69,6 +69,7 @@ const Home = () => {
             ...tx,
             chainId: chains[0] === 'sol' ? solChainId : ambChainId,
             userAddress: tx.addressFrom,
+            userAddressTo: tx.addressTo,
             eventId: tx.eventId,
             status: tx.status,
             withdrawTx: {

@@ -36,9 +36,12 @@ const TransactionItem = ({item}) => {
     const explorerLink = Object.values(allNetworks).find(
       (el) => el.chainId === chainId,
     );
-
     return explorerLink ? explorerLink.explorerUrl : null;
   };
+
+  const cropAddress = (address) => {
+    return `${address.substring(0, 4)}...${address.substring(address.length - 4, address.length)}`
+  }
 
   return (
     <>
@@ -48,8 +51,16 @@ const TransactionItem = ({item}) => {
       >
         <TableCell>
           <a href={`${getExplorerLink(item.chainId)}address/${item.userAddress}`} target="_blank">
-            {item.userAddress}
+            {cropAddress(item.userAddress)}
           </a>
+          {item.userAddressTo && (
+            <>
+              {" "}|{" "}
+              <a href={`${getExplorerLink(item.chainId)}address/${item.userAddressTo}`} target="_blank">
+                {cropAddress(item.userAddressTo)}
+              </a>
+            </>
+          )}
         </TableCell>
         <TableCell>
           <a href={`${getExplorerLink(item.chainId)}address/${item.tokenFrom.address}`} target="_blank">
