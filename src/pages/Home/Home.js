@@ -68,6 +68,7 @@ const Home = () => {
           setTransactions(data.map((tx) => ({
             ...tx,
             chainId: chains[0] === 'sol' ? solChainId : ambChainId,
+            destChainId: chains[0] !== 'sol' ? solChainId : ambChainId,
             userAddress: tx.addressFrom,
             userAddressTo: tx.addressTo,
             eventId: tx.eventId,

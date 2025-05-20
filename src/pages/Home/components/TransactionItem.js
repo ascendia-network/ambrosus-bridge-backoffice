@@ -30,7 +30,7 @@ const TransactionItem = ({item}) => {
   };
 
   const getExplorerLink = (chainId) => {
-    if (chainId === 6003100671677645902) {
+    if (chainId === '6003100671677645902') {
       return `https://explorer.solana.com/tx`
     }
     const explorerLink = Object.values(allNetworks).find(
@@ -56,7 +56,7 @@ const TransactionItem = ({item}) => {
           {item.userAddressTo && (
             <>
               {" "}|{" "}
-              <a href={`${getExplorerLink(item.chainId)}address/${item.userAddressTo}`} target="_blank">
+              <a href={`${getExplorerLink(item.destChainId)}address/${item.userAddressTo}`} target="_blank">
                 {cropAddress(item.userAddressTo)}
               </a>
             </>
@@ -67,11 +67,9 @@ const TransactionItem = ({item}) => {
             {item.tokenFrom.name}
           </a>
           ->
-          {destinationNetTxHash ? (
-            <a href={`${getExplorerLink(item.destChainId)}address/${item.tokenTo.address}`} target="_blank">
-              {item.tokenTo.name}
-            </a>
-          ) : item.tokenTo.name}
+          <a href={`${getExplorerLink(item.destChainId)}address/${item.tokenTo.address}`} target="_blank">
+            {item.tokenTo.name}
+          </a>
         </TableCell>
         <TableCell>{item.eventId}</TableCell>
         <TableCell>
