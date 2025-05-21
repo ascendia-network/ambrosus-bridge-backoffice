@@ -31,7 +31,7 @@ const TransactionItem = ({item}) => {
 
   const getExplorerLink = (chainId) => {
     if (chainId === '6003100671677645902') {
-      return `https://explorer.solana.com/tx`
+      return `https://explorer.solana.com/`
     }
     const explorerLink = Object.values(allNetworks).find(
       (el) => el.chainId === chainId,
