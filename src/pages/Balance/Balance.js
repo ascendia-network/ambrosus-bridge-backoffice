@@ -90,7 +90,7 @@ const Balance = () => {
       22040
     );
     const sAMBOnSOL = new ethers.Contract('0x8D3e03889bFCb859B2dBEB65C60a52Ad9523512c', ABI, provider);
-    const sAMBOnSOLLocked = sAMBOnSOL.balanceOf('0xfdbBEc1347B64c6eAc2cbabfc98D908AC2A91570');
+    const sAMBOnSOLLocked = sAMBOnSOL.balanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
     const sAMBOnSOLSupplied = getTokenTotalSupply('sambYmW5WDE3nmJLuUMHsZqJEdwqoFhGvsf6PVthu3a');
 
     const USDCOnSolLocked = getSolTokenBalance('usdcfEkwfCV5owknRwdZGWVSnaZjCdTmjLtmiG6P1GF', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
