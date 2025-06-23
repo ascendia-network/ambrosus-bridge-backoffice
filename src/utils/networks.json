@@ -87,7 +87,7 @@
       "code": "BSC",
       "tokenSymbol": "BNB",
       "explorerUrl": "https://bscscan.com/",
-      "rpcUrl": "https://bsc-mainnet.nodereal.io/v1/7693ffc0d9d54ec5bc135b4827fa5aee",
+      "rpcUrl": "https://bsc-dataseed.binance.org/",
       "batchRpcUrl": "https://bsc-dataseed1.binance.org/",
       "rpcUrlWS": "wss://bsc-mainnet.nodereal.io/ws/v1/7693ffc0d9d54ec5bc135b4827fa5aee"
     }
