@@ -9,7 +9,7 @@ import Fees from '../Fees/Fees';
 import ConfigContext from '../../context/ConfigContext/context';
 import FeesBalances from "../FeesBalances/FeesBalances";
 
-const solChainId = '6003100671677645902';
+const solChainId = '6003100671677628416';
 
 const Home = () => {
   const { bridges } = useContext(ConfigContext);
@@ -56,14 +56,14 @@ const Home = () => {
     const chains = currentTab.split('/');
 
     if (currentTab.includes('sol')) {
-      let chainFrom = 22040;
+      let chainFrom = 16718;
       let chainTo = solChainId;
 
       if (chains[0] === 'sol') {
         chainFrom = solChainId;
-        chainTo = 22040;
+        chainTo = 16718;
       }
-      axios.get(`https://bridge-v2-api.ambrosus-test.io/api/backoffice?chainFrom=${chainFrom}&chainTo=${chainTo}`)
+      axios.get(`https://bridge-v2-api.ascendia.network/api/backoffice?chainFrom=${chainFrom}&chainTo=${chainTo}`)
         .then(({data}) => {
           setTransactions(data.map((tx) => ({
             ...tx,
