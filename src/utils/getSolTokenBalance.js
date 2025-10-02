@@ -3,7 +3,7 @@ import {getAccount, getAssociatedTokenAddressSync, getMint} from '@solana/spl-to
 
 export async function getSolTokenBalance(tokenAddress, wallet) {
   try {
-    const connection = new Connection('https://api.devnet.solana.com');
+    const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=642da34f-e70f-465a-a613-2f23faaf9ea0');
     const tokenMintAddress = new PublicKey(tokenAddress);
     const walletAddress = new PublicKey(wallet);
 

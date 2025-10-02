@@ -86,20 +86,20 @@ const Balance = () => {
 
   const handleSolBalances = async () => {
     const provider = new ethers.providers.StaticJsonRpcProvider(
-      NetworksConfig.testnet.amb.rpcUrl,
-      22040
+      NetworksConfig.production.amb.rpcUrl,
+      16718
     );
-    const sAMBOnSOL = new ethers.Contract('0x8D3e03889bFCb859B2dBEB65C60a52Ad9523512c', ABI, provider);
+    const sAMBOnSOL = new ethers.Contract('0x2b2d892C3fe2b4113dd7aC0D2c1882AF202FB28F', ABI, provider);
     const sAMBOnSOLLocked = sAMBOnSOL.balanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
-    const sAMBOnSOLSupplied = getTokenTotalSupply('sambYmW5WDE3nmJLuUMHsZqJEdwqoFhGvsf6PVthu3a');
+    const sAMBOnSOLSupplied = getTokenTotalSupply('SAMBiNFocuZgLqkGHZbe2u6gugF861MdMkgrDdiuEpW');
 
-    const USDCOnSolLocked = getSolTokenBalance('usdcfEkwfCV5owknRwdZGWVSnaZjCdTmjLtmiG6P1GF', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const USDCOnAMB = new ethers.Contract('0xF7c8f345Ac1d29F13c16d8Ae34f534D9056E3FF2', ABI, provider);
-    const USDCOnAMBSOLThinkLocked = USDCOnAMB.bridgeBalances('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
+    const USDCOnSolLocked = getSolTokenBalance('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
+    const USDCOnAMB = new ethers.Contract('0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de', ABI, provider);
+    const USDCOnAMBSOLThinkLocked = USDCOnAMB.bridgeBalances('0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de');
 
     const wSOLOnSolLocked = getSolTokenBalance('So11111111111111111111111111111111111111112', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const wSOLOnAMB = new ethers.Contract('0x28559D10F1C1E0D74F7Cfbb0Bf48e75F605b73Ac', ABI, provider);
-    const USDwSOLOnAMBSOLThinkLocked = wSOLOnAMB.bridgeBalanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
+    const wSOLOnAMB = new ethers.Contract('0x15c59080a8a39eee0d1429Ab30a923BC210258BD', ABI, provider);
+    const USDwSOLOnAMBSOLThinkLocked = wSOLOnAMB.bridgeBalanceOf('0x15c59080a8a39eee0d1429Ab30a923BC210258BD');
 
     Promise.all([sAMBOnSOLLocked, sAMBOnSOLSupplied, USDCOnSolLocked, USDCOnAMBSOLThinkLocked, wSOLOnSolLocked, USDwSOLOnAMBSOLThinkLocked]).then(setSolBalances);
   };
