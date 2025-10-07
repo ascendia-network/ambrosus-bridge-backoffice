@@ -6,7 +6,7 @@ import formatBridgesFromConfig from '../../utils/formatBridgesFromConfig';
 
 const ConfigProvider = (props) => {
   const [config, setConfig] = useState({});
-  console.log(process.env.REACT_APP_CONFIG_URL);
+
   useEffect(async () => {
     const { tokens, bridges } = await fetch(
       process.env.REACT_APP_CONFIG_URL,
