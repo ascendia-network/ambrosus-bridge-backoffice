@@ -1,14 +1,26 @@
-import React, {useContext, useEffect, useState} from 'react';
-import providers, {ambChainId, bscChainId, ethChainId,} from '../../utils/providers';
-import {ethers, utils} from 'ethers';
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
+import providers, {
+  ambChainId,
+  bscChainId,
+  ethChainId,
+} from '../../utils/providers';
+import { ethers, utils } from 'ethers';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 import ConfigContext from '../../context/ConfigContext/context';
 import formatValue from '../../utils/formatAmount';
 import ABI from '../../utils/balanceAbi.json';
-import {Connection, PublicKey} from '@solana/web3.js';
-import {getMint} from '@solana/spl-token';
-import {getSolTokenBalance} from '../../utils/getSolTokenBalance';
-import {allNetworks} from '../../utils/networks';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { getMint } from '@solana/spl-token';
+import { getSolTokenBalance } from '../../utils/getSolTokenBalance';
+import { allNetworks } from '../../utils/networks';
 import NetworksConfig from '../../utils/networks.json';
 
 const tableHeads = [
@@ -18,12 +30,14 @@ const tableHeads = [
   'ETH',
   'BSC',
   'AMB (SOL)',
-  'SOL'
+  'SOL',
 ];
 
-
 const getTokenTotalSupply = async (mintAddress) => {
-  const connection = new Connection('https://api.devnet.solana.com');
+  const connection = new Connection(
+    'https://mainnet.helius-rpc.com/?api-key=5f4a4958-b3df-4104-8cd4-3e0da00f4e38',
+  );
+
   const mintPublicKey = new PublicKey(mintAddress);
 
   const mintInfo = await getMint(connection, mintPublicKey);
@@ -43,30 +57,67 @@ const Balance = () => {
   }, []);
 
   const handleBalances = async () => {
-    const sAMBOnAMB = new ethers.Contract(getTokenAddress('SAMB', ambChainId), ABI, providers[ambChainId]);
+    const sAMBOnAMB = new ethers.Contract(
+      getTokenAddress('SAMB', ambChainId),
+      ABI,
+      providers[ambChainId],
+    );
     const sAMBOnETHLocked = sAMBOnAMB.balanceOf(bridges[ethChainId].native);
     const sAMBOnBSCLocked = sAMBOnAMB.balanceOf(bridges[bscChainId].native);
-    const sAMBOnETH = new ethers.Contract(getTokenAddress('SAMB', ethChainId), ABI, providers[ethChainId]);
-    const sAMBOnBSC = new ethers.Contract(getTokenAddress('SAMB', bscChainId), ABI, providers[bscChainId]);
+    const sAMBOnETH = new ethers.Contract(
+      getTokenAddress('SAMB', ethChainId),
+      ABI,
+      providers[ethChainId],
+    );
+    const sAMBOnBSC = new ethers.Contract(
+      getTokenAddress('SAMB', bscChainId),
+      ABI,
+      providers[bscChainId],
+    );
     const sAMBOnETHSupplied = sAMBOnETH.totalSupply();
     const sAMBOnBSCSupplied = sAMBOnBSC.totalSupply();
 
-    const USDCOnETH = new ethers.Contract(getTokenAddress('USDC', ethChainId), ABI, providers[ethChainId]);
+    const USDCOnETH = new ethers.Contract(
+      getTokenAddress('USDC', ethChainId),
+      ABI,
+      providers[ethChainId],
+    );
     const USDCOnEthLocked = USDCOnETH.balanceOf(bridges[ethChainId].foreign);
-    const USDCOnBSC = new ethers.Contract(getTokenAddress('USDC', bscChainId), ABI, providers[bscChainId]);
+    const USDCOnBSC = new ethers.Contract(
+      getTokenAddress('USDC', bscChainId),
+      ABI,
+      providers[bscChainId],
+    );
     const USDCOnBSCLocked = USDCOnBSC.balanceOf(bridges[bscChainId].foreign);
-    const USDCOnAMB = new ethers.Contract(getTokenAddress('USDC', ambChainId), ABI, providers[ambChainId]);
-    const USDCOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(bridges[ethChainId].native);
-    const USDCOnAMBBSCThinkLocked = USDCOnAMB.bridgeBalances(bridges[bscChainId].native);
+    const USDCOnAMB = new ethers.Contract(
+      getTokenAddress('USDC', ambChainId),
+      ABI,
+      providers[ambChainId],
+    );
+    const USDCOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(
+      bridges[ethChainId].native,
+    );
+    const USDCOnAMBBSCThinkLocked = USDCOnAMB.bridgeBalances(
+      bridges[bscChainId].native,
+    );
 
-
-    const BUSDOnETH = new ethers.Contract(getTokenAddress('BUSD', bscChainId), ABI, providers[bscChainId]);
+    const BUSDOnETH = new ethers.Contract(
+      getTokenAddress('BUSD', bscChainId),
+      ABI,
+      providers[bscChainId],
+    );
     const BUSDOnEthLocked = BUSDOnETH.balanceOf(bridges[bscChainId].foreign);
     // const BUSDOnBSC = new ethers.Contract(getTokenAddress('USDC', bscChainId), ABI, providers[bscChainId]);
     // const BUSDOnBSCLocked = USDCOnBSC.balanceOf(bridges[bscChainId].foreign);
-    const BUSDOnAMB = new ethers.Contract(getTokenAddress('BUSD', ambChainId), ABI, providers[ambChainId]);
+    const BUSDOnAMB = new ethers.Contract(
+      getTokenAddress('BUSD', ambChainId),
+      ABI,
+      providers[ambChainId],
+    );
     // const BUSDOnAMBETHThinkLocked = USDCOnAMB.bridgeBalances(bridges[ethChainId].native);
-    const BUSDOnAMBBSCThinkLocked = BUSDOnAMB.bridgeBalances(bridges[bscChainId].native);
+    const BUSDOnAMBBSCThinkLocked = BUSDOnAMB.bridgeBalances(
+      bridges[bscChainId].native,
+    );
 
     Promise.all([
       sAMBOnETHLocked,
@@ -79,132 +130,160 @@ const Balance = () => {
       USDCOnAMBBSCThinkLocked,
       BUSDOnEthLocked,
       BUSDOnAMBBSCThinkLocked,
-    ]).then((res) => {
-      setBalances(res);
-    });
+    ])
+      .then((res) => {
+        setBalances(res);
+      })
+      .catch((error) => {
+        console.error('Error getting balances:', error);
+      });
   };
 
   const handleSolBalances = async () => {
     const provider = new ethers.providers.StaticJsonRpcProvider(
       NetworksConfig.production.amb.rpcUrl,
-      16718
+      16718,
     );
-    const sAMBOnSOL = new ethers.Contract('0x2b2d892C3fe2b4113dd7aC0D2c1882AF202FB28F', ABI, provider);
-    const sAMBOnSOLLocked = sAMBOnSOL.balanceOf('0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d');
-    const sAMBOnSOLSupplied = getTokenTotalSupply('SAMBiNFocuZgLqkGHZbe2u6gugF861MdMkgrDdiuEpW');
 
-    const USDCOnSolLocked = getSolTokenBalance('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const USDCOnAMB = new ethers.Contract('0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de', ABI, provider);
-    const USDCOnAMBSOLThinkLocked = USDCOnAMB.bridgeBalances('0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de');
+    const sAMBOnSOL = new ethers.Contract(
+      '0x2b2d892C3fe2b4113dd7aC0D2c1882AF202FB28F',
+      ABI,
+      provider,
+    );
 
-    const wSOLOnSolLocked = getSolTokenBalance('So11111111111111111111111111111111111111112', 'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1')
-    const wSOLOnAMB = new ethers.Contract('0x15c59080a8a39eee0d1429Ab30a923BC210258BD', ABI, provider);
-    const USDwSOLOnAMBSOLThinkLocked = wSOLOnAMB.bridgeBalanceOf('0x15c59080a8a39eee0d1429Ab30a923BC210258BD');
+    const sAMBOnSOLLocked = sAMBOnSOL.balanceOf(
+      '0xF8493e24ca466442fA285ACfAFE2faa50B1AeF8d',
+    );
 
-    Promise.all([sAMBOnSOLLocked, sAMBOnSOLSupplied, USDCOnSolLocked, USDCOnAMBSOLThinkLocked, wSOLOnSolLocked, USDwSOLOnAMBSOLThinkLocked]).then(setSolBalances);
+    const sAMBOnSOLSupplied = getTokenTotalSupply(
+      'SAMBiNFocuZgLqkGHZbe2u6gugF861MdMkgrDdiuEpW',
+    );
+
+    const USDCOnSolLocked = getSolTokenBalance(
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1',
+    );
+
+    const USDCOnAMB = new ethers.Contract(
+      '0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de',
+      ABI,
+      provider,
+    );
+
+    const USDCOnAMBSOLThinkLocked = USDCOnAMB.bridgeBalances(
+      '0xFF9F502976E7bD2b4901aD7Dd1131Bb81E5567de',
+    );
+
+    const wSOLOnSolLocked = getSolTokenBalance(
+      'So11111111111111111111111111111111111111112',
+      'ambZMSUBvU8bLfxop5uupQd9tcafeJKea1KoyTv2yM1',
+    );
+
+    const wSOLOnAMB = new ethers.Contract(
+      '0x15c59080a8a39eee0d1429Ab30a923BC210258BD',
+      ABI,
+      provider,
+    );
+
+    const USDwSOLOnAMBSOLThinkLocked = wSOLOnAMB.bridgeBalanceOf(
+      '0x338c7EF1d18B9F8b9Bb2B5b97CB6A179907fBeF7',
+    );
+
+    Promise.all([
+      sAMBOnSOLLocked,
+      sAMBOnSOLSupplied,
+      USDCOnSolLocked,
+      USDCOnAMBSOLThinkLocked,
+      wSOLOnSolLocked,
+      USDwSOLOnAMBSOLThinkLocked,
+    ])
+      .then(setSolBalances)
+      .catch((error) => {
+        console.error('Error getting sol balances:', error);
+      });
   };
 
   const getTokenAddress = (symbol, chainId) => {
     return tokens.find(
-        (token) => token.symbol === symbol && token.chainId === chainId,
+      (token) => token.symbol === symbol && token.chainId === chainId,
     )?.address;
   };
   return (
-      balances && solBalances && (
-          <div>
-            <TableContainer component={Paper}>
-              <Table sx={{ maxWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    {tableHeads.map((el) => (
-                        <TableCell key={el}>{el}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>sAMB</TableCell>
-                    <TableCell>
-                      {formatValue(utils.formatUnits(balances[0], 18))}
-                      /
-                      {formatValue(utils.formatUnits(balances[2], 18))}
-                    </TableCell>
-                    <TableCell>
-                      {formatValue(utils.formatUnits(balances[1], 18))}
-                      /
-                      {formatValue(utils.formatUnits(balances[3], 18))}
-                    </TableCell>
-                    <TableCell>
-                      -
-                    </TableCell>
-                    <TableCell>
-                      -
-                    </TableCell>
-                    <TableCell>
-                      {utils.formatEther(solBalances[0])}
-                      /
-                      {solBalances[1]}
-                    </TableCell>
-                    <TableCell>
-                      -
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>USDC</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>
-                      {formatValue(utils.formatUnits(balances[4], 6))}
-                      /
-                      {formatValue(utils.formatUnits(balances[6], 18))}
-                    </TableCell>
-                    <TableCell>
-                      {formatValue(utils.formatUnits(balances[5], 18))}
-                      /
-                      {formatValue(utils.formatUnits(balances[7], 18))}
-                    </TableCell>
-                    <TableCell>
-                      -
-                    </TableCell>
-                    <TableCell>
-                      {solBalances[2]}
-                      /
-                      {utils.formatEther(solBalances[3])}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>BUSD</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>
-                      {formatValue(utils.formatUnits(balances[8], 18))}
-                      /
-                      {formatValue(utils.formatUnits(balances[9], 18))}
-                    </TableCell>
-                    <TableCell>
-                      -
-                    </TableCell>
-                    <TableCell>-</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>wSOL</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>
-                      {solBalances[4]}
-                      /
-                      {utils.formatEther(solBalances[5])}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-      )
+    balances &&
+    solBalances && (
+      <div>
+        <TableContainer component={Paper}>
+          <Table sx={{ maxWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                {tableHeads.map((el) => (
+                  <TableCell key={el}>{el}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>sAMB</TableCell>
+                <TableCell>
+                  {formatValue(utils.formatUnits(balances[0], 18))}/
+                  {formatValue(utils.formatUnits(balances[2], 18))}
+                </TableCell>
+                <TableCell>
+                  {formatValue(utils.formatUnits(balances[1], 18))}/
+                  {formatValue(utils.formatUnits(balances[3], 18))}
+                </TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>
+                  {utils.formatEther(solBalances[0])}/{solBalances[1]}
+                </TableCell>
+                <TableCell>-</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>USDC</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>
+                  {formatValue(utils.formatUnits(balances[4], 6))}/
+                  {formatValue(utils.formatUnits(balances[6], 18))}
+                </TableCell>
+                <TableCell>
+                  {formatValue(utils.formatUnits(balances[5], 18))}/
+                  {formatValue(utils.formatUnits(balances[7], 18))}
+                </TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>
+                  {solBalances[2]}/{utils.formatEther(solBalances[3])}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>BUSD</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>
+                  {formatValue(utils.formatUnits(balances[8], 18))}/
+                  {formatValue(utils.formatUnits(balances[9], 18))}
+                </TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>wSOL</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>
+                  {solBalances[4]}/{utils.formatEther(solBalances[5])}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    )
   );
 };
 
