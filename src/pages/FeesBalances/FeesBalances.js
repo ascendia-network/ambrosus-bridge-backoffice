@@ -92,8 +92,8 @@ const FeesBalances = (address) => {
             <TableCell>{balances[2]}</TableCell>
             <TableCell>{balances[4]}</TableCell>
             <TableCell>{balances[6]}</TableCell>
-            <TableCell>{balances[8]}</TableCell>
-            <TableCell>{balances[9]}</TableCell>
+            <TableCell>-</TableCell>
+            <TableCell>-</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Bridge fee</TableCell>
@@ -101,8 +101,8 @@ const FeesBalances = (address) => {
             <TableCell>{balances[3]}</TableCell>
             <TableCell>{balances[5]}</TableCell>
             <TableCell>{balances[7]}</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>-</TableCell>
+            <TableCell>{balances[8]}</TableCell>
+            <TableCell>{balances[9]}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
