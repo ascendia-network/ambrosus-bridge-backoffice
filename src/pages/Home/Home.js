@@ -1,13 +1,17 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import {Tab, Tabs} from '@mui/material';
-import providers, {ambChainId, bscChainId, ethChainId} from '../../utils/providers';
+import { Tab, Tabs } from '@mui/material';
+import providers, {
+  ambChainId,
+  bscChainId,
+  ethChainId,
+} from '../../utils/providers';
 import TabPanel from './components/TabPanel';
-import {createBridgeContract} from '../../utils/contracts';
+import { createBridgeContract } from '../../utils/contracts';
 import Balance from '../Balance';
 import Fees from '../Fees/Fees';
 import ConfigContext from '../../context/ConfigContext/context';
-import FeesBalances from "../FeesBalances/FeesBalances";
+import FeesBalances from '../FeesBalances/FeesBalances';
 
 const solChainId = '6003100671677628416';
 
@@ -20,6 +24,8 @@ const Home = () => {
   const [isEthAmbPaused, setIsEthAmbPaused] = useState(false);
   const [isEthBscPaused, setIsAmbBscPaused] = useState(false);
   const [isBscAmbPaused, setIsBscAmbPaused] = useState(false);
+
+  console.log('transactions', { transactions });
 
   useEffect(async () => {
     const ambEthContract = createBridgeContract(
@@ -63,24 +69,32 @@ const Home = () => {
         chainFrom = solChainId;
         chainTo = 16718;
       }
-      axios.get(`https://bridge-v2-api.ascendia.network/api/backoffice?chainFrom=${chainFrom}&chainTo=${chainTo}`)
-        .then(({data}) => {
-          setTransactions(data.map((tx) => ({
-            ...tx,
-            chainId: chains[0] === 'sol' ? solChainId : ambChainId,
-            destChainId: chains[0] !== 'sol' ? solChainId : ambChainId,
-            userAddress: tx.addressFrom,
-            userAddressTo: tx.addressTo,
-            eventId: tx.eventId,
-            status: tx.status,
-            withdrawTx: {
-              destinationTxHash: tx.sendTx.txHash,
-              txTimestamp: tx.sendTx.timestamp,
-            }
-          })))
-        })
+      axios
+        .get(
+          `https://bridge-v2-api.ascendia.network/api/backoffice?chainFrom=${chainFrom}&chainTo=${chainTo}`,
+        )
+        .then(({ data }) => {
+          setTransactions(
+            data.map((tx) => ({
+              ...tx,
+              chainId: chains[0] === 'sol' ? solChainId : ambChainId,
+              destChainId: chains[0] !== 'sol' ? solChainId : ambChainId,
+              userAddress: tx.addressFrom,
+              userAddressTo: tx.addressTo,
+              eventId: tx.eventId,
+              status: tx.status,
+              withdrawTx: {
+                destinationTxHash: tx.sendTx.txHash,
+                txTimestamp: tx.sendTx.timestamp,
+              },
+            })),
+          );
+        });
     } else {
-      axios.get(`https://backoffice-api.ambrosus.io/backoffice?networkFrom=${chains[0]}&networkTo=${chains[1]}`)
+      axios
+        .get(
+          `https://backoffice-api.ambrosus.io/backoffice?networkFrom=${chains[0]}&networkTo=${chains[1]}`,
+        )
         .then(({ data }) => {
           let txs = [];
 
@@ -99,18 +113,24 @@ const Home = () => {
           }
 
           data.forEach((el) => {
-            txs = [...txs, ...el.transfers.map((tx) => ({
-              ...tx,
-              chainId: departureChainId,
-              destChainId: destinationChainId,
-              eventId: el.eventId,
-              destinationTxHash: el.transferFinishTx.txHash,
-              status: el.status
-            }))]
+            txs = [
+              ...txs,
+              ...el.transfers.map((tx) => ({
+                ...tx,
+                chainId: departureChainId,
+                destChainId: destinationChainId,
+                eventId: el.eventId,
+                destinationTxHash: el.transferFinishTx.txHash,
+                status: el.status,
+              })),
+            ];
           });
-          setTransactions(txs.sort((a, b) => b.withdrawTx.txTimestamp - a.withdrawTx.txTimestamp))
+          setTransactions(
+            txs.sort(
+              (a, b) => b.withdrawTx.txTimestamp - a.withdrawTx.txTimestamp,
+            ),
+          );
         });
-
     }
   }, [currentTab]);
 
@@ -121,7 +141,7 @@ const Home = () => {
   return (
     <div className="transactions-page">
       <div className="navbar">
-        <Tabs value={currentTab} onChange={changeTab} style={{width: 900}}>
+        <Tabs value={currentTab} onChange={changeTab} style={{ width: 900 }}>
           <Tab label="Amb/Eth" value={'amb/eth'} />
           <Tab label="Eth/Amb" value={'eth/amb'} />
           <Tab label="Amb/Bsc" value={'amb/bsc'} />
@@ -143,20 +163,12 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {currentTab === 99 && (
-        <Fees />
-      )}
-      {currentTab === 100 && (
-        <Balance />
-      )}
-      {currentTab === 98 && (
-          <FeesBalances />
-      )}
-      {!Number.isInteger(currentTab) && (
-        <TabPanel txs={transactions} />
-      )}
+      {currentTab === 99 && <Fees />}
+      {currentTab === 100 && <Balance />}
+      {currentTab === 98 && <FeesBalances />}
+      {!Number.isInteger(currentTab) && <TabPanel txs={transactions} />}
     </div>
-  )
-}
+  );
+};
 
 export default Home;

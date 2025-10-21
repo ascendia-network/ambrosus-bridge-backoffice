@@ -1,16 +1,17 @@
-import React, { useEffect, useMemo, useState} from 'react';
-import {TableCell, TableRow} from '@mui/material';
-import {BigNumber, utils} from 'ethers';
-import {allNetworks} from '../../../utils/networks';
-import {ambChainId} from "../../../utils/providers";
+import React, { useEffect, useMemo, useState } from 'react';
+import { TableCell, TableRow } from '@mui/material';
+import { BigNumber, utils } from 'ethers';
+import { allNetworks } from '../../../utils/networks';
+import { ambChainId } from '../../../utils/providers';
 
-const TransactionItem = ({item}) => {
+const TransactionItem = ({ item }) => {
   const [destinationNetTxHash, setDestinationNetTxHash] = useState(null);
 
+  const solChainId = '6003100671677628416';
+  const destChainId = item.destChainId;
+
   useEffect(async () => {
-    setDestinationNetTxHash(
-      item.status === 5 ? item.destinationTxHash : '',
-    );
+    setDestinationNetTxHash(item.status === 5 ? item.destinationTxHash : '');
   }, []);
 
   const formatDate = (timestamp) => {
@@ -31,7 +32,7 @@ const TransactionItem = ({item}) => {
 
   const getExplorerLink = (chainId) => {
     if (chainId === '6003100671677628416') {
-      return `https://explorer.solana.com/`
+      return `https://explorer.solana.com/`;
     }
     const explorerLink = Object.values(allNetworks).find(
       (el) => el.chainId === chainId,
@@ -40,8 +41,11 @@ const TransactionItem = ({item}) => {
   };
 
   const cropAddress = (address) => {
-    return `${address.substring(0, 4)}...${address.substring(address.length - 4, address.length)}`
-  }
+    return `${address.substring(0, 4)}...${address.substring(
+      address.length - 4,
+      address.length,
+    )}`;
+  };
 
   return (
     <>
@@ -50,45 +54,65 @@ const TransactionItem = ({item}) => {
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell>
-          <a href={`${getExplorerLink(item.chainId)}address/${item.userAddress}`} target="_blank">
+          <a
+            href={`${getExplorerLink(item.chainId)}address/${item.userAddress}`}
+            target="_blank"
+          >
             {cropAddress(item.userAddress)}
           </a>
           {item.userAddressTo && (
             <>
-              {" "}|{" "}
-              <a href={`${getExplorerLink(item.destChainId)}address/${item.userAddressTo}`} target="_blank">
+              {' '}
+              |{' '}
+              <a
+                href={`${getExplorerLink(item.destChainId)}address/${
+                  item.userAddressTo
+                }`}
+                target="_blank"
+              >
                 {cropAddress(item.userAddressTo)}
               </a>
             </>
           )}
         </TableCell>
         <TableCell>
-          <a href={`${getExplorerLink(item.chainId)}address/${item.tokenFrom.address}`} target="_blank">
+          <a
+            href={`${getExplorerLink(item.chainId)}address/${
+              item.tokenFrom.address
+            }`}
+            target="_blank"
+          >
             {item.tokenFrom.name}
           </a>
           ->
-          <a href={`${getExplorerLink(item.destChainId)}address/${item.tokenTo.address}`} target="_blank">
+          <a
+            href={`${getExplorerLink(item.destChainId)}address/${
+              item.tokenTo.address
+            }`}
+            target="_blank"
+          >
             {item.tokenTo.name}
           </a>
         </TableCell>
         <TableCell>{item.eventId}</TableCell>
+        <TableCell>{item.denominatedAmount}</TableCell>
         <TableCell>
-          {item.denominatedAmount}
-        </TableCell>
-        <TableCell>
-          {!item.feeTransfer ? '-' : utils.formatUnits(
-            BigNumber.from(item.feeTransfer.toString())
-              .add(BigNumber.from(item.feeBridge.toString())),
-            18
-          )}
+          {!item.feeTransfer
+            ? '-'
+            : utils.formatUnits(
+                BigNumber.from(item.feeTransfer.toString()).add(
+                  BigNumber.from(item.feeBridge.toString()),
+                ),
+                18,
+              )}
         </TableCell>
         <TableCell>{formatDate(item.withdrawTx.txTimestamp)}</TableCell>
         <TableCell>
-          {item.status}/5
+          {item.status}/{solChainId === destChainId ? 4 : 5}
         </TableCell>
       </TableRow>
     </>
-  )
+  );
 };
 
 export default TransactionItem;
