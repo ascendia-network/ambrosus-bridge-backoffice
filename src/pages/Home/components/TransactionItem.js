@@ -7,9 +7,6 @@ import { ambChainId } from '../../../utils/providers';
 const TransactionItem = ({ item }) => {
   const [destinationNetTxHash, setDestinationNetTxHash] = useState(null);
 
-  const solChainId = '6003100671677628416';
-  const destChainId = item.destChainId;
-
   useEffect(async () => {
     setDestinationNetTxHash(item.status === 5 ? item.destinationTxHash : '');
   }, []);
@@ -107,9 +104,7 @@ const TransactionItem = ({ item }) => {
               )}
         </TableCell>
         <TableCell>{formatDate(item.withdrawTx.txTimestamp)}</TableCell>
-        <TableCell>
-          {item.status}/{solChainId === destChainId ? 4 : 5}
-        </TableCell>
+        <TableCell>{item.status}/5</TableCell>
       </TableRow>
     </>
   );
