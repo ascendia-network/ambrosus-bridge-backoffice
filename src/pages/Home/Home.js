@@ -71,7 +71,7 @@ const Home = () => {
       }
       axios
         .get(
-          `https://bridge-v2-api.ascendia.network/api/backoffice?chainFrom=${chainFrom}&chainTo=${chainTo}`,
+          `https://bridge-v2-api.ascendia.network/api/backoffice?limit=1000&chainFrom=${chainFrom}&chainTo=${chainTo}`,
         )
         .then(({ data }) => {
           setTransactions(
